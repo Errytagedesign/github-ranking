@@ -1,23 +1,27 @@
-import logo from "./logo.svg";
+import React, { useEffect } from "react";
+
 import "./App.css";
 
+import { Routes, Route } from "react-router-dom";
+import LeaderBoard from "./pages/LeaderBoard";
+import Signin from "./pages/SignIn";
+import ProtectedRoutes from "./components/ProtectedRoutes";
+
 function App() {
+  // const AOS = require("aos");
+  // useEffect(() => {
+  //   AOS.init();
+  // }, [AOS]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Routes>
+        <Route path="/signin" element={<Signin />} />
+        <Route element={<ProtectedRoutes />}>
+          <Route path="/" element={<LeaderBoard />} />
+          <Route path="/user" element={<Signin />} />
+        </Route>
+      </Routes>
     </div>
   );
 }
