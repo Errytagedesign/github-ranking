@@ -14,6 +14,10 @@ const fetchUser = () => {
 
 export const initialState = {
   user: fetchUser(),
+  clientId: process.env.REACT_APP_CLIENT_ID,
+  redirectUri: process.env.REACT_APP_CLIENT_REDIRECT_URI,
+  clientSecret: process.env.REACT_APP_CLIENT_SECRET,
+  // client_id: process.env.REACT_APP_CLIENT_ID,
 };
 
 // 2. Create Reducers
@@ -24,6 +28,12 @@ export const reducer = (state, action) => {
       return {
         ...state,
         user: action.user,
+      };
+    case "LOGOUT":
+      localStorage.clear();
+      return {
+        ...state,
+        user: null,
       };
 
     default:
