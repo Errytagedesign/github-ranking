@@ -1,82 +1,64 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
-import { useStateValue } from "../context/StateContext";
+// import { useStateValue } from "../context/StateContext";
 
-function Signin() {
-  const [{ user, clientId, clientSecret }, dispatch] = useStateValue();
+function Signin({ setUserData }) {
+  //   const [{ user, clientId, clientSecret }, dispatch] = useStateValue();
+
+  //   console.log(user);
 
   //   const [userData, setUserData] = useState("");
 
-  const getUserData = async () => {
-    const url = "https://api.github.com/user";
-    const userToken = localStorage.getItem("accessToken");
+  //   useEffect(() => {
+  //     // get string of our query from address bar after auth
+  //     const queryStrings = window.location.search;
+  //     //   get query from url params
+  //     const urlParams = new URLSearchParams(queryStrings);
 
-    //   use try catch to get errors in case of errors
-    try {
-      const gitRes = await fetch(url, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-          Accept: "application/json",
-        },
-      });
+  //     // GET the code sent from github through url params
+  //     const codeParams = urlParams.get("code");
 
-      //   Check if there's error with the response before proceeding
-      if (!gitRes.ok) {
-        throw new Error(`HTTP error! status ${gitRes.status}`);
-      }
+  //     setLoading(true);
+  //     const getToken = async () => {
+  //       const getTokenParams = new URLSearchParams({
+  //         client_id: clientId,
+  //         client_secret: clientSecret,
+  //         code: codeParams,
+  //         // scope: "repo,gist",
+  //       });
 
-      //   If everything good then display user data
-      const userData = await gitRes.json();
-      console.log(userData);
-    } catch (e) {}
-  };
+  //       const url = `https://github.com/login/oauth/access_token?${getTokenParams.toString()}`;
+  //       await fetch(
+  //         url,
 
-  useEffect(() => {
-    // get string of our query from address bar after auth
-    const queryStrings = window.location.search;
-    //   get query from url params
-    const urlParams = new URLSearchParams(queryStrings);
+  //         {
+  //           method: "POST",
+  //           headers: {
+  //             Accept: "application/json",
+  //           },
+  //         }
+  //       )
+  //         .then((res) => {
+  //           return res.json();
+  //         })
+  //         .then((data) => {
+  //           //   console.log(data.access_token);
+  //           setLoading(false);
 
-    // GET the code sent from github through url params
-    const codeParams = urlParams.get("code");
-    console.log(codeParams);
+  //           if (data.access_token) {
+  //             localStorage.setItem("accessToken", data.access_token);
 
-    const getToken = async () => {
-      const getTokenParams = new URLSearchParams({
-        client_id: clientId,
-        client_secret: clientSecret,
-        code: codeParams,
-        scope: "repo,gist",
-      });
+  //             // window.location.replace("/");
+  //           }
+  //         });
+  //     };
+  //     getToken();
+  //   }, [clientId, clientSecret, dispatch]);
 
-      const url = `https://github.com/login/oauth/access_token?${getTokenParams.toString()}`;
-      await fetch(
-        url,
-
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-          },
-        }
-      )
-        .then((res) => {
-          return res.json();
-        })
-        .then((data) => {
-          console.log(data.access_token);
-
-          if (data.access_token) {
-            localStorage.setItem("accessToken", data.access_token);
-          }
-        });
-    };
-
-    getToken();
-
-    getUserData();
-  }, []);
+  //   useEffect(() => {
+  //     codeParams && setUserData(codeParams);
+  //   }, [codeParams, setUserData]);
+  const clientId = process.env.REACT_APP_CLIENT_ID;
 
   const handleLoginWithGithub = () => {
     window.location.assign(
@@ -85,7 +67,7 @@ function Signin() {
   };
 
   return (
-    <div>
+    <div className="d-flex flex-column col-8 mx-auto">
       <Button onClick={handleLoginWithGithub} className="btn btn-success mt-5">
         Sign In
       </Button>

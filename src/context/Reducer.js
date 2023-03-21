@@ -5,15 +5,15 @@
 const fetchUser = () => {
   // check if user data is available on local storage and fetched else set clear localstorage
   const userData =
-    localStorage.getItem("user") !== undefined
-      ? JSON.parse(localStorage.getItem("user"))
+    localStorage.getItem("accesToken") !== undefined
+      ? JSON.stringify(localStorage.getItem("accessToken"))
       : localStorage.clear();
 
   return userData;
 };
 
 export const initialState = {
-  user: fetchUser(),
+  user: null,
   clientId: process.env.REACT_APP_CLIENT_ID,
   redirectUri: process.env.REACT_APP_CLIENT_REDIRECT_URI,
   clientSecret: process.env.REACT_APP_CLIENT_SECRET,
@@ -23,17 +23,18 @@ export const initialState = {
 // 2. Create Reducers
 
 export const reducer = (state, action) => {
+  console.log(state);
+
   switch (action.type) {
-    case "SET_USER":
+    case "LOGIN":
       return {
         ...state,
         user: action.user,
       };
     case "LOGOUT":
-      localStorage.clear();
       return {
         ...state,
-        user: null,
+        user: action.user,
       };
 
     default:

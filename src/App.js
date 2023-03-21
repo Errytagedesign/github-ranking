@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LeaderBoard from "./pages/LeaderBoard";
 import Signin from "./pages/SignIn";
-import ProtectedRoutes from "./components/ProtectedRoutes";
+import UserProfile from "./pages/UserProfile";
+// import ProtectedRoutes from "./components/ProtectedRoutes";
+// import { useStateValue } from "./context/StateContext";
 
 function App() {
+  const [userData, setUserData] = useState([]);
+  // const [{ user }] = useStateValue();
+
+  // console.log(user);
   // const AOS = require("aos");
   // useEffect(() => {
   //   AOS.init();
@@ -16,13 +22,22 @@ function App() {
 
   return (
     <div className="App">
-      <Routes>
-        <Route path="/signin" element={<Signin />} />
-        <Route element={<ProtectedRoutes />}>
-          <Route path="/" element={<LeaderBoard />} />
-          <Route path="/user" element={<Signin />} />
-        </Route>
-      </Routes>
+      <Router>
+        <Routes>
+          <Route
+            path="/signin"
+            element={<Signin userData={userData} setUserData={setUserData} />}
+          />
+
+          <Route
+            path="/"
+            element={
+              <LeaderBoard userData={userData} setUserData={setUserData} />
+            }
+          />
+          <Route path="/user" element={<UserProfile />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
